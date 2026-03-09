@@ -1,66 +1,84 @@
-import React from 'react';
-import Container from './Container';
+"use client";
 
-const Footer = () => {
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import Container from './Container';
+import Logo from '@/assets/img/logo.png'; // আপনার ফোল্ডার পাথ অনুযায়ী ঠিক করে নিন
+import { Facebook, Instagram, Mail } from 'lucide-react'; 
+
+const Footer: React.FC = () => {
     return (
-        
+        <footer className="bg-white pt-12 md:pt-16 pb-0 border-t border-gray-100">
             <Container>
-             <footer className="footer sm:footer-horizontal bg-base-300 text-base-content p-10">
-  <nav>
-    <h6 className="footer-title">Services</h6>
-    <a className="link link-hover">Branding</a>
-    <a className="link link-hover">Design</a>
-    <a className="link link-hover">Marketing</a>
-    <a className="link link-hover">Advertisement</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Company</h6>
-    <a className="link link-hover">About us</a>
-    <a className="link link-hover">Contact</a>
-    <a className="link link-hover">Jobs</a>
-    <a className="link link-hover">Press kit</a>
-  </nav>
-  <nav>
-    <h6 className="footer-title">Social</h6>
-    <div className="grid grid-flow-col gap-4">
-      <a>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          className="fill-current">
-          <path
-            d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-        </svg>
-      </a>
-      <a>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          className="fill-current">
-          <path
-            d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
-        </svg>
-      </a>
-      <a>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          className="fill-current">
-          <path
-            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
-        </svg>
-      </a>
-    </div>
-  </nav>
-</footer>
+                {/* Grid layout: 
+                   - Mobile: 1 column (items-center, text-center)
+                   - Tablet/Desktop: 3 columns (text-left)
+                */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-12 mb-12 md:mb-16 text-center md:text-left">
+                    
+                    {/* 1. Brand Section */}
+                    <div className="flex flex-col items-center md:items-start gap-4 md:gap-5">
+                        <Link href="/">
+                            <Image 
+                                src={Logo} 
+                                alt="Seoul Mirage Logo" 
+                                width={130} 
+                                height={45} 
+                                className="object-contain"
+                            />
+                        </Link>
+                        <p className="text-gray-500 text-[14px] max-w-[300px] leading-relaxed">
+                            Lorem ipsum dolor sit amet consectetur. 
+                            Scelerisque lectus habitasse adipiscing.
+                        </p>
+                        {/* Social Icons */}
+                        <div className="flex gap-5 mt-2">
+                            <a href="mailto:info@example.com" className="text-[#E893CF] hover:text-pink-600 transition-colors">
+                                <Mail size={22} strokeWidth={1.5} />
+                            </a>
+                            <a href="#" className="text-[#E893CF] hover:text-pink-600 transition-colors">
+                                <Facebook size={22} strokeWidth={1.5} />
+                            </a>
+                            <a href="#" className="text-[#E893CF] hover:text-pink-600 transition-colors">
+                                <Instagram size={22} strokeWidth={1.5} />
+                            </a>
+                        </div>
+                    </div>
+
+                    {/* 2. Shop Links */}
+                    <div className="flex flex-col items-center md:items-start">
+                        <h3 className="text-xl md:text-2xl font-normal text-gray-800 mb-4 md:mb-6">Shop</h3>
+                        <ul className="flex flex-col gap-3 md:gap-4 text-[15px]">
+                            <li><Link href="/all-products" className="text-gray-600 hover:text-[#E893CF] transition-colors">All Products</Link></li>
+                            <li><Link href="/bestsellers" className="text-gray-600 hover:text-[#E893CF] transition-colors">Bestsellers</Link></li>
+                            <li><Link href="/new-arrivals" className="text-gray-600 hover:text-[#E893CF] transition-colors">New Arrivals</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* 3. About Links */}
+                    <div className="flex flex-col items-center md:items-start">
+                        <h3 className="text-xl md:text-2xl font-normal text-gray-800 mb-4 md:mb-6">About</h3>
+                        <ul className="flex flex-col gap-3 md:gap-4 text-[15px]">
+                            <li><Link href="/about-us" className="text-gray-600 hover:text-[#E893CF] transition-colors">About Us</Link></li>
+                            <li><Link href="/contact" className="text-gray-600 hover:text-[#E893CF] transition-colors">Contact Us</Link></li>
+                            <li><Link href="/shipping-returns" className="text-gray-600 hover:text-[#E893CF] transition-colors">Shipping & Returns</Link></li>
+                            <li><Link href="/privacy-policy" className="text-gray-600 hover:text-[#E893CF] transition-colors">Privacy Policy</Link></li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Bottom Bar */}
+                <div className="py-6 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-[13px] text-gray-400 font-light tracking-wide">
+                        © {new Date().getFullYear()} Seoul Mirage. All rights reserved.
+                    </p>
+                </div>
             </Container>
-        
+            
+            {/* Bottom Purple Accent Line (As per image) */}
+            <div className="h-2 w-full bg-[#A78BFA] opacity-80 mt-2"></div>
+        </footer>
     );
 };
 
