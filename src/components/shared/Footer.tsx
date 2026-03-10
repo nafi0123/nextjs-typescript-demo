@@ -76,8 +76,7 @@ const Footer: React.FC = () => {
                 </div>
             </Container>
             
-            {/* Bottom Purple Accent Line (As per image) */}
-            <div className="h-2 w-full bg-[#A78BFA] opacity-80 mt-2"></div>
+        
         </footer>
     );
 };
