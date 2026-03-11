@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
-// আপনার লোকাল লোগো ইম্পোর্ট (পাথ চেক করে নিবেন)
 import Logo from "@/assets/img/logo.png";
 
 const LoginPage = () => {
@@ -22,7 +21,7 @@ const LoginPage = () => {
             const res = await signIn("credentials", {
                 email,
                 password,
-                redirect: false, // আমরা নিজেরাই রিডাইরেক্ট করব
+                redirect: false, 
             });
 
             if (res?.error) {

@@ -3,37 +3,45 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, Loader2 } from 'lucide-react';
+import useAxiosPublic from '@/hooks/useAxiosPublic'; // আপনার হুক ইম্পোর্ট করুন
 
-// আপনার লোকাল লোগো ইম্পোর্ট (পাথ চেক করে নিবেন)
 import Logo from "@/assets/img/logo.png";
 
 const RegisterPage = () => {
+    const axiosPublic = useAxiosPublic(); // হুক কল করা হলো
     const router = useRouter();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
+        setIsLoading(true);
+
         try {
-            const res = await fetch("/api/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ name, email, password }),
+            // হুক থেকে আসা axiosPublic ব্যবহার করে POST রিকোয়েস্ট
+            const res = await axiosPublic.post("/register", {
+                name,
+                email,
+                password
             });
 
-            if (res.ok) {
-                // সফলভাবে রেজিস্ট্রেশন হলে লগইন পেজে পাঠিয়ে দিবে
+            if (res.status === 201 || res.status === 200) {
+                // সাকসেস হলে লগইন পেজে রিডাইরেক্ট
                 router.push("/login");
-            } else {
-                const data = await res.json();
-                setError(data.message || "Registration failed!");
             }
-        } catch (err) {
-            setError("Something went wrong!");
+        } catch (err: any) {
+            // Axios এরর হ্যান্ডলিং
+            const errorMessage = err.response?.data?.message || "Something went wrong! Please try again.";
+            setError(errorMessage);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -41,7 +49,7 @@ const RegisterPage = () => {
         <div className="min-h-screen bg-white flex items-center justify-center p-4">
             <div className="w-full max-w-md bg-white p-8 rounded-2xl">
                 
-                {/* Figma Logo - centered */}
+                {/* Figma Logo */}
                 <div className="flex justify-center mb-8">
                     <Image 
                         src={Logo} 
@@ -52,19 +60,18 @@ const RegisterPage = () => {
                     />
                 </div>
 
-                {/* Text - centered */}
                 <div className="text-center mb-10">
                     <h1 className="text-3xl font-bold text-slate-900 mb-2">Create Account</h1>
-                    <p className="text-slate-500">Enter your details to register</p>
+                    <p className="text-slate-500">Join us to get the best skincare experience</p>
                 </div>
 
-                {/* Register Form */}
+                {/* Form */}
                 <form onSubmit={handleRegister} className="space-y-6">
                     
                     {error && (
-                        <p className="text-red-500 bg-red-50 text-sm p-3 rounded-md text-center">
+                        <div className="text-red-500 bg-red-50 text-sm p-3 rounded-lg text-center border border-red-100 animate-in fade-in duration-300">
                             {error}
-                        </p>
+                        </div>
                     )}
 
                     {/* Name Input */}
@@ -72,11 +79,11 @@ const RegisterPage = () => {
                         <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                         <input
                             type="text"
-                            placeholder="Enter your name"
+                            placeholder="Full Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
-                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-400"
+                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900"
                         />
                     </div>
 
@@ -85,11 +92,11 @@ const RegisterPage = () => {
                         <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                         <input
                             type="email"
-                            placeholder="Enter your email"
+                            placeholder="Email Address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-400"
+                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900"
                         />
                     </div>
 
@@ -98,34 +105,41 @@ const RegisterPage = () => {
                         <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
                         <input
                             type={showPassword ? "text" : "password"}
-                            placeholder="Create a Password"
+                            placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="w-full pl-11 pr-11 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-400"
+                            className="w-full pl-11 pr-11 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900"
                         />
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                             className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 hover:text-slate-600"
                         >
-                            {showPassword ? <EyeOff /> : <Eye />}
+                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                         </button>
                     </div>
 
-                    {/* Register Button - Figma Style (Black) */}
+                    {/* Submit Button */}
                     <button
                         type="submit"
-                        className="w-full bg-slate-900 text-white py-3 rounded-xl font-semibold hover:bg-slate-800 transition duration-200"
+                        disabled={isLoading}
+                        className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-semibold hover:bg-slate-800 transition duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                        Register
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="animate-spin h-5 w-5" />
+                                Processing...
+                            </>
+                        ) : (
+                            "Create Account"
+                        )}
                     </button>
                 </form>
 
-                {/* Link to Login */}
                 <div className="text-center mt-6 text-slate-600 text-sm">
                     Already have an account? {" "}
-                    <a href="/login" className="text-slate-900 font-medium hover:underline">
+                    <a href="/login" className="text-slate-900 font-bold hover:underline">
                         Sign In
                     </a>
                 </div>
