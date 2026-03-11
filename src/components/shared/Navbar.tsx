@@ -4,6 +4,9 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react"; // Import signOut
+import { useGlobalContext } from "@/context/GlobalContext"; // Import Context
+
 import {
   Search,
   User,
@@ -12,13 +15,10 @@ import {
   Menu,
   X,
   LogOut,
-  Settings,
   LayoutDashboard,
-  Loader2,
   UserCircle,
 } from "lucide-react";
 
-// Shadcn UI Component
 import {
   Sheet,
   SheetContent,
@@ -27,7 +27,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-// Assets
 import logo from "../../assets/img/logo.png";
 
 const navLinks = [
@@ -43,15 +42,13 @@ export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
-  // Dummy User (আপনার AuthContext অনুযায়ী এগুলো পরে ডাইনামিক করবেন)
-  const user = null; 
-  const userRole = "admin"; 
+  // --- Context থেকে ডাটা নেওয়া ---
+  const { user, isLoading } = useGlobalContext(); 
 
   const userMenuRef = useRef<HTMLDivElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // Outside Click Handler
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node))
@@ -69,10 +66,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-[1000] w-full bg-white/95 backdrop-blur-sm border-b border-slate-100 font-sans">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-8 h-20 flex items-center justify-between relative">
         
-        {/* --- LEFT SIDE: Mobile Menu & Logo --- */}
         <div className={`flex items-center gap-4 md:gap-6 transition-all duration-300 ${isSearchOpen ? "w-0 opacity-0 overflow-hidden md:w-auto md:opacity-100" : "w-auto opacity-100"}`}>
           
-          {/* Shadcn Mobile Sidebar */}
           <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
             <SheetTrigger asChild>
               <button className="lg:hidden p-2 hover:bg-slate-50 rounded-full transition-colors">
@@ -99,15 +94,18 @@ export default function Navbar() {
                   </Link>
                 ))}
 
-                {/* Mobile Auth Links */}
                 <div className="mt-4 space-y-4">
-                  <Link href="/my-profile" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 text-lg font-semibold text-slate-700">
-                    <UserCircle className="w-5 h-5" /> My Profile
-                  </Link>
-                  {userRole === "admin" && (
-                    <Link href="/dashboard" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 text-lg font-semibold text-[#CCAF91]">
-                      <LayoutDashboard className="w-5 h-5" /> Dashboard
-                    </Link>
+                  {user && (
+                    <>
+                      <Link href="/my-profile" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 text-lg font-semibold text-slate-700">
+                        <UserCircle className="w-5 h-5" /> My Profile
+                      </Link>
+                      {user.role === "admin" && (
+                        <Link href="/dashboard" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 text-lg font-semibold text-[#CCAF91]">
+                          <LayoutDashboard className="w-5 h-5" /> Dashboard
+                        </Link>
+                      )}
+                    </>
                   )}
                 </div>
               </div>
@@ -118,7 +116,6 @@ export default function Navbar() {
             <Image src={logo} alt="Logo" width={100} height={50} className="w-[85px] md:w-[100px] object-contain" />
           </Link>
 
-          {/* Desktop Links */}
           <div className="hidden lg:flex items-center gap-10 ml-8">
             {navLinks.map((link) => (
               <Link
@@ -132,10 +129,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* --- RIGHT SIDE: Search & User Actions --- */}
         <div className="flex items-center gap-1.5 md:gap-4 flex-1 justify-end" ref={searchContainerRef}>
           
-          {/* Search Input Bar */}
           <div className={`flex items-center bg-slate-50 rounded-full transition-all duration-500 overflow-hidden ${isSearchOpen ? "flex-1 md:flex-none md:w-[350px] px-4 py-1.5 ring-1 ring-slate-200 ml-4" : "w-0 opacity-0"}`}>
             <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
             <input
@@ -161,18 +156,34 @@ export default function Navbar() {
             <div className="relative" ref={userMenuRef}>
               <button onClick={() => setShowUserMenu(!showUserMenu)} className="flex items-center gap-2 p-2 rounded-full hover:bg-slate-50 transition-all">
                 <User className="w-5 h-5 text-slate-700" />
+                {/* লগইন থাকলে নাম দেখানো */}
+                {user && <span className="hidden md:block text-xs font-bold text-slate-700">{user.name.split(' ')[0]}</span>}
               </button>
 
               {showUserMenu && (
                 <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 shadow-2xl rounded-sm py-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="px-2 space-y-1 text-left">
-                    <Link href="/login" className="block px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">Sign In</Link>
-                    <Link href="/my-profile" className="flex items-center gap-3 px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">
-                      <UserCircle size={16} /> My Profile
-                    </Link>
-                    <button className="w-full flex items-center gap-3 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 mt-2 border-t border-slate-50 pt-3">
-                      <LogOut size={16} /> Logout
-                    </button>
+                    {!user ? (
+                      <Link href="/login" onClick={() => setShowUserMenu(false)} className="block px-4 py-2 text-sm font-bold text-slate-700 hover:bg-slate-50">Sign In</Link>
+                    ) : (
+                      <>
+                        <p className="px-4 py-2 text-[10px] uppercase tracking-widest text-slate-400 font-bold">Account</p>
+                        <Link href="/my-profile" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-2 text-sm font-bold text-slate-600 hover:bg-slate-50">
+                          <UserCircle size={16} /> My Profile
+                        </Link>
+                        {user.role === "admin" && (
+                           <Link href="/dashboard" onClick={() => setShowUserMenu(false)} className="flex items-center gap-3 px-4 py-2 text-sm font-bold text-[#CCAF91] hover:bg-slate-50">
+                           <LayoutDashboard size={16} /> Dashboard
+                         </Link>
+                        )}
+                        <button 
+                          onClick={() => signOut()}
+                          className="w-full flex items-center gap-3 px-4 py-2 text-sm font-bold text-red-500 hover:bg-red-50 mt-2 border-t border-slate-50 pt-3"
+                        >
+                          <LogOut size={16} /> Logout
+                        </button>
+                      </>
+                    )}
                   </div>
                 </div>
               )}
