@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react"; // Import signOut
-import { useGlobalContext } from "@/context/GlobalContext"; // Import Context
+
 
 import {
   Search,
@@ -28,6 +28,8 @@ import {
 } from "@/components/ui/sheet";
 
 import logo from "../../assets/img/logo.png";
+import { useGlobalContext } from "@/hooks/useGlobalContext";
+
 
 const navLinks = [
   { name: "Skincare", href: "#", hasDropdown: true },
