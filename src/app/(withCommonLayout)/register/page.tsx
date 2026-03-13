@@ -1,20 +1,18 @@
 "use client";
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { Mail, Lock, User, Eye, EyeOff, Loader2 } from 'lucide-react';
-import useAxiosPublic from '@/hooks/useAxiosPublic'; // আপনার হুক ইম্পোর্ট করুন
-
-import Logo from "@/assets/img/logo.png";
+import { Eye, EyeOff, Loader2 } from 'lucide-react';
+import useAxiosPublic from '@/hooks/useAxiosPublic';
 
 const RegisterPage = () => {
-    const axiosPublic = useAxiosPublic(); // হুক কল করা হলো
+    const axiosPublic = useAxiosPublic();
     const router = useRouter();
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState(''); // ডিজাইনে এটি আছে
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
@@ -22,10 +20,14 @@ const RegisterPage = () => {
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+
+        if (password !== confirmPassword) {
+            return setError("Passwords do not match!");
+        }
+
         setIsLoading(true);
 
         try {
-            // হুক থেকে আসা axiosPublic ব্যবহার করে POST রিকোয়েস্ট
             const res = await axiosPublic.post("/register", {
                 name,
                 email,
@@ -33,12 +35,10 @@ const RegisterPage = () => {
             });
 
             if (res.status === 201 || res.status === 200) {
-                // সাকসেস হলে লগইন পেজে রিডাইরেক্ট
                 router.push("/login");
             }
         } catch (err: any) {
-            // Axios এরর হ্যান্ডলিং
-            const errorMessage = err.response?.data?.message || "Something went wrong! Please try again.";
+            const errorMessage = err.response?.data?.message || "Something went wrong!";
             setError(errorMessage);
         } finally {
             setIsLoading(false);
@@ -46,104 +46,114 @@ const RegisterPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white p-8 rounded-2xl">
+        // ১. মেইন ব্যাকগ্রাউন্ড কালার আপনার ইমেজের সাথে মিল রেখে
+        <div className="min-h-screen bg-[#F2EDE4] flex flex-col items-center justify-center p-4">
+            
+            {/* ২. হেডার টেক্সট সেকশন */}
+            <div className="text-center mb-8">
+                <h1 className="text-4xl md:text-5xl font-medium text-[#1A1A1A] mb-4">
+                    Create your account
+                </h1>
+                <p className="text-lg text-[#1A1A1A]">
+                    Or <a href="/login" className="underline font-semibold cursor-pointer">sign in to your existing account</a>
+                </p>
+            </div>
+
+            {/* ৩. হোয়াইট কার্ড সেকশন */}
+            <div className="w-full max-w-[550px] bg-white p-10 md:p-16 rounded-sm shadow-sm">
                 
-                {/* Figma Logo */}
-                <div className="flex justify-center mb-8">
-                    <Image 
-                        src={Logo} 
-                        alt="Seoul Mirage Logo" 
-                        width={150} 
-                        height={40} 
-                        priority 
-                    />
-                </div>
-
-                <div className="text-center mb-10">
-                    <h1 className="text-3xl font-bold text-slate-900 mb-2">Create Account</h1>
-                    <p className="text-slate-500">Join us to get the best skincare experience</p>
-                </div>
-
-                {/* Form */}
-                <form onSubmit={handleRegister} className="space-y-6">
+                <form onSubmit={handleRegister} className="space-y-7">
                     
                     {error && (
-                        <div className="text-red-500 bg-red-50 text-sm p-3 rounded-lg text-center border border-red-100 animate-in fade-in duration-300">
+                        <p className="text-red-500 text-sm text-center font-medium">
                             {error}
-                        </div>
+                        </p>
                     )}
 
-                    {/* Name Input */}
-                    <div className="relative">
-                        <User className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    {/* Full Name Input */}
+                    <div className="space-y-2">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Full Name
+                        </label>
                         <input
                             type="text"
-                            placeholder="Full Name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             required
-                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900"
+                            className="w-full px-4 py-4 border border-slate-200 rounded-md focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-300"
+                            placeholder="Your full name"
                         />
                     </div>
 
-                    {/* Email Input */}
-                    <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    {/* Email Address Input */}
+                    <div className="space-y-2">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Email Address
+                        </label>
                         <input
                             type="email"
-                            placeholder="Email Address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900"
+                            className="w-full px-4 py-4 border border-slate-200 rounded-md focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-300"
+                            placeholder="Your email address"
                         />
                     </div>
 
                     {/* Password Input */}
-                    <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="w-full pl-11 pr-11 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 hover:text-slate-600"
-                        >
-                            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                        </button>
+                    <div className="space-y-2">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Password
+                        </label>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="w-full px-4 py-4 border border-slate-200 rounded-md focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-300"
+                                placeholder="Create a password"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400"
+                            >
+                                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Submit Button */}
+                    {/* Confirm Password Input (ডিজাইন অনুযায়ী যোগ করা হয়েছে) */}
+                    <div className="space-y-2">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Confirm Password
+                        </label>
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                            className="w-full px-4 py-4 border border-slate-200 rounded-md focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-300"
+                            placeholder="Confirm your password"
+                        />
+                    </div>
+
+                    
+
+                    {/* ৪. ক্রিয়েট অ্যাকাউন্ট বাটন - শার্প কর্নার ও পিওর ব্ল্যাক */}
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-slate-900 text-white py-3.5 rounded-xl font-semibold hover:bg-slate-800 transition duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        className="w-full bg-black text-white py-5 rounded-sm font-bold uppercase tracking-widest hover:bg-zinc-900 transition duration-300 flex items-center justify-center gap-2 disabled:opacity-80"
                     >
                         {isLoading ? (
-                            <>
-                                <Loader2 className="animate-spin h-5 w-5" />
-                                Processing...
-                            </>
+                            <Loader2 className="animate-spin h-5 w-5" />
                         ) : (
                             "Create Account"
                         )}
                     </button>
                 </form>
-
-                <div className="text-center mt-6 text-slate-600 text-sm">
-                    Already have an account? {" "}
-                    <a href="/login" className="text-slate-900 font-bold hover:underline">
-                        Sign In
-                    </a>
-                </div>
-
             </div>
         </div>
     );

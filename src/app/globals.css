@@ -5,6 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 @plugin "daisyui";
 
+.section-title {
+  @apply text-[32px] md:text-[40px] lg:text-[48px] font-bold text-slate-900 leading-tight tracking-tight text-center;
+}
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

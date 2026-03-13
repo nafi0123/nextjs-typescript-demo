@@ -1,12 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
-
-import Logo from "@/assets/img/logo.png";
+import { Eye, EyeOff } from 'lucide-react';
 
 const LoginPage = () => {
     const router = useRouter();
@@ -27,7 +24,6 @@ const LoginPage = () => {
             if (res?.error) {
                 setError("Invalid Credentials!");
             } else {
-                
                 router.push("/"); 
             }
         } catch (err) {
@@ -36,92 +32,84 @@ const LoginPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4">
-            <div className="w-full max-w-md bg-white p-8 rounded-2xl">
+        // ১. মেইন কন্টেইনারে আপনার ইমেজের মতো অফ-হোয়াইট/বেজ কালার ব্যবহার করা হয়েছে
+        <div className="min-h-screen bg-[#F2EDE4] flex flex-col items-center justify-center p-4">
+            
+            {/* ২. হেডার টেক্সট সেকশন */}
+            <div className="text-center mb-8">
+                <h1 className="text-4xl md:text-5xl font-medium text-[#1A1A1A] mb-4">
+                    Sign in to your account
+                </h1>
+                <p className="text-lg text-[#1A1A1A]">
+                    Or <a href="/register" className="underline font-semibold cursor-pointer">create a new account</a>
+                </p>
+            </div>
+
+            {/* ৩. হোয়াইট কার্ড সেকশন */}
+            <div className="w-full max-w-[550px] bg-white p-10 md:p-16 rounded-sm shadow-sm">
                 
-                {/* 1. Figma Logo - centered */}
-                <div className="flex justify-center mb-8">
-                    <Image 
-                        src={Logo} 
-                        alt="Seoul Mirage Logo" 
-                        width={150} // Figma অনুযায়ী সাইজ দিবেন
-                        height={40} 
-                        priority 
-                    />
-                </div>
-
-                {/* 2. Welcome Back text - centered */}
-                <div className="text-center mb-10">
-                    <h1 className="text-3xl font-bold text-slate-900 mb-2">Welcome back</h1>
-                    <p className="text-slate-500">Please enter your credentials to continue</p>
-                </div>
-
-                {/* 3. Login Form */}
-                <form onSubmit={handleLogin} className="space-y-6">
+                <form onSubmit={handleLogin} className="space-y-8">
                     
                     {error && (
-                        <p className="text-red-500 bg-red-50 text-sm p-3 rounded-md text-center">
+                        <p className="text-red-500 text-sm text-center font-medium">
                             {error}
                         </p>
                     )}
 
-                    {/* Email Input */}
-                    <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
+                    {/* Email Input Field */}
+                    <div className="space-y-3">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Email Address
+                        </label>
                         <input
                             type="email"
-                            placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="w-full pl-11 pr-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-400"
+                            className="w-full px-4 py-4 border border-slate-200 rounded-md focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-300"
+                            placeholder="Enter your email"
                         />
                     </div>
 
-                    {/* Password Input */}
-                    <div className="relative">
-                        <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400" />
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Enter your Password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className="w-full pl-11 pr-11 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-400"
-                        />
-                        {/* Eye Icon for Show/Hide Password */}
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 hover:text-slate-600"
-                        >
-                            {showPassword ? <EyeOff /> : <Eye />}
-                        </button>
+                    {/* Password Input Field */}
+                    <div className="space-y-3">
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                            Password
+                        </label>
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className="w-full px-4 py-4 border border-slate-200 rounded-md focus:border-slate-900 transition outline-none text-slate-900 placeholder:text-slate-300"
+                                placeholder="Enter your password"
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                            >
+                                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                            </button>
+                        </div>
                     </div>
 
-                    {/* Remember me & Forgot Password */}
-                    <div className="flex items-center justify-between text-sm">
-                        
-                        <a href="#" className="text-slate-600 hover:text-slate-900">Forgot password?</a>
+                    {/* Forgot Password Link */}
+                    <div className="flex justify-end">
+                        <a href="#" className="text-xs font-bold underline text-slate-900 uppercase tracking-tighter">
+                            Forgot your password?
+                        </a>
                     </div>
 
-                    {/* 4. Sign In Button - Figma Style (Black) */}
+                    {/* ৪. সাইন ইন বাটন - পিওর ব্ল্যাক এবং শার্প কর্নার (ডিজাইন অনুযায়ী) */}
                     <button
                         type="submit"
-                        className="w-full bg-slate-900 text-white py-3 rounded-xl font-semibold hover:bg-slate-800 transition duration-200"
+                        className="w-full bg-black text-white py-5 rounded-sm font-bold uppercase tracking-widest hover:bg-zinc-900 transition duration-300 mt-4"
                     >
                         Sign In
                     </button>
                 </form>
-
-                {/* Optional: Add a link to Register page */}
-                <div className="text-center mt-6 text-slate-600 text-sm">
-                    Don't have an account? {" "}
-                    <a href="/register" className="text-slate-900 font-medium hover:underline">
-                        Register
-                    </a>
-                </div>
-
             </div>
         </div>
     );
