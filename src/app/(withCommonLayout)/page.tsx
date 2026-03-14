@@ -1,6 +1,7 @@
 import Banner from "@/components/home/Banner";
 import JoinCom from "@/components/home/JoinCom";
 import JustTake from "@/components/home/JustTake";
+import NewArrival from "@/components/home/NewArival";
 import Philosophy from "@/components/home/Philosophy";
 import React from "react";
 
@@ -8,6 +9,7 @@ const Homepage = () => {
   return (
     <div className="">
       <Banner />
+      <NewArrival />
       <Philosophy />
       <JustTake></JustTake>
       <JoinCom></JoinCom>
