@@ -5,29 +5,41 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 const handler = NextAuth({
-  providers: [
+providers: [
     CredentialsProvider({
       name: "credentials",
-      credentials: {},
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" }
+      },
       async authorize(credentials: any) {
-        const { email, password } = credentials;
+        if (!credentials?.email || !credentials?.password) return null;
+
         try {
           await connectDB();
-          const user = await User.findOne({ email });
-          if (!user) return null;
+          const user = await User.findOne({ email: credentials.email });
 
-          const passwordMatch = await bcrypt.compare(password, user.password);
-          if (!passwordMatch) return null;
+          if (!user) {
+            console.log("❌ User not found with this email");
+            return null;
+          }
 
-          // এখানে role রিটার্ন করা হচ্ছে যাতে jwt কলব্যাক এটি পায়
+          const passwordMatch = await bcrypt.compare(credentials.password, user.password);
+          
+          if (!passwordMatch) {
+            console.log("❌ Password did not match");
+            return null;
+          }
+
+          // সাকসেস হলে ডাটা রিটার্ন
           return { 
             id: user._id.toString(), 
             name: user.name, 
             email: user.email, 
-            role: user.role // ডাটাবেজ থেকে রোল নেওয়া হচ্ছে
+            role: user.role 
           };
         } catch (error) {
-          console.error("Auth Error:", error);
+          console.error("🔥 Auth Error:", error);
           return null;
         }
       },
