@@ -19,20 +19,33 @@ const handler = NextAuth({
           const passwordMatch = await bcrypt.compare(password, user.password);
           if (!passwordMatch) return null;
 
-          return { id: user._id, name: user.name, email: user.email, role: user.role };
+          // এখানে role রিটার্ন করা হচ্ছে যাতে jwt কলব্যাক এটি পায়
+          return { 
+            id: user._id.toString(), 
+            name: user.name, 
+            email: user.email, 
+            role: user.role // ডাটাবেজ থেকে রোল নেওয়া হচ্ছে
+          };
         } catch (error) {
+          console.error("Auth Error:", error);
           return null;
         }
       },
     }),
   ],
   callbacks: {
+    // ১. টোকেনের ভেতরে রোল সেট করা
     async jwt({ token, user }: any) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.role = user.role;
+      }
       return token;
     },
+    // ২. সেশনের ভেতরে রোল পাস করা যাতে ক্লায়েন্ট সাইডে (useSession) এটি পাওয়া যায়
     async session({ session, token }: any) {
-      if (session.user) session.user.role = token.role;
+      if (session.user) {
+        session.user.role = token.role;
+      }
       return session;
     },
   },
