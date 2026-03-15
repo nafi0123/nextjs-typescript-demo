@@ -5,7 +5,7 @@ const ProductSchema = new Schema(
     name: { type: String, required: true, uppercase: true },
     price: { type: Number, required: true },
     stock: { type: Number, required: true },
-    image: { type: String, required: true }, // আপনি 'image' নামে ব্যবহার করতে চাইলে এটাই রাখুন
+    image: { type: String, required: true },
     category: { 
       type: String, 
       required: true,
