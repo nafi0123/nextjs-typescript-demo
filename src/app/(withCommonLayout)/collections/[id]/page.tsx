@@ -79,6 +79,7 @@ const ProductDetailsPage = async ({ params }: IProductDetailsProps) => {
                                 productName={product.name}
                                 productImage={product.image}
                                 productPrice={product.price}
+                                productStock={product?.stock} 
                             />
                         </div>
 
