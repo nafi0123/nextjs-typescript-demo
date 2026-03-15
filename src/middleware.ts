@@ -21,5 +21,5 @@ export default withAuth(
 
 // কোন কোন রুট গুলো প্রোটেক্ট করতে চান তা এখানে বলে দিন
 export const config = {
-  matcher: ["/dashboard/:path*",'/payment/success', '/payment/cancel'],
+  matcher: ["/dashboard/:path*",'/payment/success', '/payment/cancel', '/my-profile'],
 };

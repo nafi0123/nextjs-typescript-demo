@@ -5,7 +5,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
 const handler = NextAuth({
-providers: [
+  providers: [
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -31,12 +31,12 @@ providers: [
             return null;
           }
 
-          // সাকসেস হলে ডাটা রিটার্ন
           return { 
             id: user._id.toString(), 
             name: user.name, 
             email: user.email, 
-            role: user.role 
+            role: user.role,
+            phone: user.phone || "" // ফোন নম্বরটি এখানে যোগ করুন
           };
         } catch (error) {
           console.error("🔥 Auth Error:", error);
@@ -46,17 +46,26 @@ providers: [
     }),
   ],
   callbacks: {
-    // ১. টোকেনের ভেতরে রোল সেট করা
-    async jwt({ token, user }: any) {
+    async jwt({ token, user, trigger, session }: any) {
+      // লগইনের সময় ডাটা সেট করা
       if (user) {
         token.role = user.role;
+        token.phone = user.phone;
+      }
+
+      // ক্লায়েন্ট থেকে update() কল করলে ডাটা টোকেনে আপডেট করা
+      if (trigger === "update" && session?.user) {
+        token.name = session.user.name;
+        token.phone = session.user.phone;
       }
       return token;
     },
-    // ২. সেশনের ভেতরে রোল পাস করা যাতে ক্লায়েন্ট সাইডে (useSession) এটি পাওয়া যায়
     async session({ session, token }: any) {
       if (session.user) {
         session.user.role = token.role;
+        session.user.name = token.name;
+        // সেশনে কাস্টম ফোন ডাটা সেট করা
+        (session.user as any).phone = token.phone;
       }
       return session;
     },

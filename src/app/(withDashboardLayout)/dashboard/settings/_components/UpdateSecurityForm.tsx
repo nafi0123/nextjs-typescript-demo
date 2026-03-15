@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Lock, Save, Eye, EyeOff, Loader2 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { updatePassword } from "@/services/user.service";
+import { updatePassword } from "@/services/adminUpdatePass.service";
 
 const UpdateSecurityForm = ({ userEmail }: { userEmail: string }) => {
     const [loading, setLoading] = useState(false);
