@@ -166,7 +166,7 @@ const CartPage = ({ dbOrders = [] }: ICartPageProps) => {
                             
                             {/* My Orders বাটন */}
                             <button 
-                                onClick={() => router.push("/dashboard/my-orders")}
+                                onClick={() => router.push("/my-orders")}
                                 className="w-full mb-6 border border-black py-3 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all"
                             >
                                 <ShoppingBag size={14} /> My Orders
