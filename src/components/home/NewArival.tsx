@@ -1,5 +1,6 @@
 import { getHomeRecentProducts } from "@/services/recentHome.service";
 import Link from "next/link";
+import Image from "next/image"; // Next.js Image ইমপোর্ট
 import Container from "../shared/Container";
 
 const NewArrival = async () => {
@@ -7,7 +8,6 @@ const NewArrival = async () => {
 
     return (
         <section className="py-12 md:py-20 lg:py-24">
-            {/* মোবাইল স্ক্রিনে দুই পাশে padding দেওয়ার জন্য px-4 বা px-6 যোগ করা হয়েছে */}
             <Container>
                 <div className="px-4 sm:px-6 md:px-0">
                     
@@ -19,23 +19,23 @@ const NewArrival = async () => {
                         <div className="h-[2px] w-12 bg-black mt-3" />
                     </div>
 
-                    {/* Product Grid: 
-                        - gap-x-4: কার্ডগুলোর মাঝখানের গ্যাপ
-                        - gap-y-12: এক লাইন থেকে অন্য লাইনের গ্যাপ
-                    */}
+                    {/* Product Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16">
                         {products?.map((item: any) => (
                             <Link 
                                 key={item._id} 
-                                href={`/products/${item._id}`} 
+                                href={`/collections/${item._id}`} 
                                 className="group block space-y-4"
                             >
-                                {/* Image Container */}
+                                {/* Image Container: Image Tag implementation */}
                                 <div className="aspect-square bg-[#F5F5F5] overflow-hidden relative transition-all duration-500 group-hover:shadow-md">
-                                    <img 
+                                    <Image 
                                         src={item.image} 
-                                        alt={item.name} 
-                                        className="w-full h-full object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700" 
+                                        alt={item.name}
+                                        fill // প্যারেন্ট ডিভ অনুযায়ী জায়গা দখল করবে
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                                        className="object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700"
+                                        priority={false} // লেজি লোডিং এনাবেল রাখার জন্য
                                     />
                                 </div>
 

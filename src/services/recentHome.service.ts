@@ -22,3 +22,16 @@ export const getHomeRecentProducts = async () => {
         return [];
     }
 };
+
+export const getSingleProduct = async (id: string) => {
+    try {
+        await connectDB();
+        // ID ভ্যালিড কি না চেক করা ভালো
+        const product = await Product.findById(id).lean();
+        if (!product) return null;
+        return JSON.parse(JSON.stringify(product));
+    } catch (error) {
+        console.error("Single Product Fetch Error:", error);
+        return null;
+    }
+};
