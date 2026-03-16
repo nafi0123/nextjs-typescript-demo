@@ -16,7 +16,7 @@ const CollectionPage = async ({ searchParams }: { searchParams: Promise<{ page?:
             <Container>
                 <div className="px-4 sm:px-6 md:px-0">
                     
-                    {/* Section Header: স্ক্রিনশটের ডিজাইন অনুযায়ী */}
+                    {/* Section Header */}
                     <div className="mb-10 md:mb-14 lg:mb-16">
                         <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-slate-800 uppercase tracking-tighter italic">
                             Our Collections
@@ -24,24 +24,35 @@ const CollectionPage = async ({ searchParams }: { searchParams: Promise<{ page?:
                         <div className="h-[2px] w-12 bg-black mt-3" />
                     </div>
 
-                    {/* Product Grid: আপনার দেওয়া কোড অনুযায়ী */}
+                    {/* Product Grid */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 md:gap-x-8 md:gap-y-16">
                         {products?.map((item: any) => (
                             <Link 
                                 key={item._id} 
-                                href={`/collections/${item._id}`} // আপনার রিকোয়ারমেন্ট অনুযায়ী
+                                href={`/collections/${item._id}`} 
                                 className="group block space-y-4"
                             >
+                                {/* Image Container with Stock Check */}
                                 <div className="aspect-square bg-[#F5F5F5] overflow-hidden relative transition-all duration-500 group-hover:shadow-md">
                                     <Image 
                                         src={item.image} 
                                         alt={item.name}
                                         fill 
                                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-                                        className="object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700"
+                                        className={`object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700 ${item.stock === 0 ? "opacity-40" : ""}`}
                                     />
+
+                                    {/* Out of Stock Badge */}
+                                    {item.stock === 0 && (
+                                        <div className="absolute inset-0 bg-white/40 backdrop-blur-[1px] flex items-center justify-center z-10">
+                                            <span className="bg-black text-white text-[10px] md:text-xs font-black uppercase px-3 py-1.5 tracking-widest shadow-xl">
+                                                Out of Stock
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
+                                {/* Info Section */}
                                 <div className="space-y-1 px-1">
                                     <p className="text-[8px] md:text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
                                         {item.category}
@@ -50,14 +61,14 @@ const CollectionPage = async ({ searchParams }: { searchParams: Promise<{ page?:
                                         {item.name}
                                     </h3>
                                     <p className="text-lg md:text-2xl font-black text-slate-900 pt-1">
-                                        ${item.price}
+                                        ৳{item.price}
                                     </p>
                                 </div>
                             </Link>
                         ))}
                     </div>
 
-                    {/* Pagination Section: প্রফেশনাল বাটন ডিজাইন */}
+                    {/* Pagination Section */}
                     {totalPages > 1 && (
                         <div className="mt-20 flex justify-center items-center gap-4">
                             <Link

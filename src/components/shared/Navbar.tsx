@@ -50,7 +50,7 @@ export default function Navbar() {
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  // ১. লাইভ সার্চ সাজেশান লজিক
+  // ১. লাইভ সার্চ লজিক
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (searchQuery.length > 1) {
@@ -60,12 +60,11 @@ export default function Navbar() {
         setSuggestions([]);
       }
     };
-
     const debounce = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(debounce);
   }, [searchQuery]);
 
-  // ২. লোকাল স্টোরেজ থেকে রিয়েল-টাইম কার্ট কাউন্ট আপডেট
+  // ২. কার্ট কাউন্ট আপডেট
   useEffect(() => {
     const updateCartCount = () => {
       try {
@@ -75,12 +74,10 @@ export default function Navbar() {
         setCartCount(0);
       }
     };
-
     updateCartCount();
     const interval = setInterval(updateCartCount, 1000);
     window.addEventListener("storage", updateCartCount);
     window.addEventListener("cartUpdated", updateCartCount);
-
     return () => {
       clearInterval(interval);
       window.removeEventListener("storage", updateCartCount);
@@ -113,24 +110,36 @@ export default function Navbar() {
                 <Menu className="w-6 h-6 text-slate-700" />
               </button>
             </SheetTrigger>
-            <SheetContent side="left" className="w-[300px] p-8 border-none shadow-2xl">
-              <SheetHeader className="mb-10 text-left">
-                <SheetTitle>
-                  <Image src={logo} alt="Logo" width={80} height={40} className="object-contain" />
-                </SheetTitle>
-              </SheetHeader>
-              <div className="flex flex-col gap-6 text-left">
+            
+            {/* Mobile Sidebar Styling */}
+            <SheetContent side="left" className="w-[300px] p-0 bg-white border-r border-slate-100 shadow-2xl">
+              <div className="p-8 border-b border-slate-50 bg-white">
+                <SheetHeader className="text-left">
+                  <SheetTitle>
+                    <Image src={logo} alt="Logo" width={100} height={50} className="object-contain" />
+                  </SheetTitle>
+                </SheetHeader>
+              </div>
+              
+              <div className="flex flex-col p-8 space-y-6">
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Navigation</p>
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsMobileOpen(false)}
-                    className="text-xl font-bold text-slate-900 border-b border-slate-50 pb-3 flex justify-between items-center hover:text-black transition-colors uppercase"
+                    className="text-lg font-bold text-slate-900 flex justify-between items-center hover:text-black transition-colors uppercase italic tracking-tighter"
                   >
                     {link.name}
-                    {link.hasDropdown && <ChevronDown className="w-5 h-5 text-slate-400" />}
                   </Link>
                 ))}
+              </div>
+
+              {/* Mobile Sidebar Footer Info */}
+              <div className="absolute bottom-0 left-0 w-full p-8 border-t border-slate-50 bg-slate-50/50">
+                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-loose">
+                  Premium Skincare Essentials
+                </p>
               </div>
             </SheetContent>
           </Sheet>
@@ -148,9 +157,9 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Right: Search, User & Cart */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-1.5 md:gap-4 flex-1 justify-end" ref={searchContainerRef}>
-          
+          {/* Search Input */}
           <div className="relative flex-1 md:flex-none">
             <div className={`flex items-center bg-slate-50 rounded-full transition-all duration-500 overflow-hidden ${isSearchOpen ? "flex-1 md:w-[400px] px-4 py-1.5 ring-1 ring-slate-200 ml-4" : "w-0 opacity-0"}`}>
               <Search className="w-4 h-4 text-slate-400 flex-shrink-0" />
@@ -164,11 +173,11 @@ export default function Navbar() {
               />
             </div>
 
-            {/* Live Search Suggestions with Next.js Image */}
+            {/* Live Search Suggestions */}
             {isSearchOpen && suggestions.length > 0 && (
               <div className="absolute top-full right-0 w-full md:w-[400px] bg-white mt-3 border border-slate-100 shadow-2xl rounded-sm z-[1001] overflow-hidden animate-in fade-in slide-in-from-top-2">
                 <div className="px-4 py-2 bg-slate-50 border-b">
-                  <span className="text-[10px] font-black uppercase text-slate-400">Products Found</span>
+                  <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Products Found</span>
                 </div>
                 <div className="max-h-[350px] overflow-y-auto">
                   {suggestions.map((product) => (
@@ -179,13 +188,7 @@ export default function Navbar() {
                       className="flex items-center gap-4 p-4 hover:bg-slate-50 border-b border-slate-50 last:border-none transition-colors group"
                     >
                       <div className="relative w-10 h-10 border p-1 bg-white flex-shrink-0 overflow-hidden">
-                         <Image 
-                            src={product.image} 
-                            alt={product.name} 
-                            fill 
-                            className="object-contain p-1"
-                            sizes="40px"
-                         />
+                         <Image src={product.image} alt={product.name} fill className="object-contain p-1" sizes="40px" />
                       </div>
                       <div className="flex flex-col min-w-0">
                         <span className="text-sm font-bold text-slate-900 truncate">{product.name}</span>
@@ -206,13 +209,12 @@ export default function Navbar() {
           </button>
 
           <div className={`flex items-center gap-1.5 md:gap-4 ${isSearchOpen ? "hidden md:flex" : "flex"}`}>
-            
+            {/* User Dropdown */}
             <div className="relative" ref={userMenuRef}>
               <button onClick={() => setShowUserMenu(!showUserMenu)} className="flex items-center gap-2 p-2 rounded-full hover:bg-slate-50 transition-all">
                 <User className="w-5 h-5 text-slate-700" />
                 {user && <span className="hidden md:block text-xs font-bold text-slate-700">{user.name.split(' ')[0]}</span>}
               </button>
-
               {showUserMenu && (
                 <div className="absolute right-0 mt-3 w-56 bg-white border border-slate-100 shadow-2xl rounded-sm py-3 z-50 animate-in fade-in slide-in-from-top-2">
                   <div className="px-2 space-y-1">
@@ -239,6 +241,7 @@ export default function Navbar() {
               )}
             </div>
 
+            {/* Cart Icon */}
             <Link href="/cart" className="relative p-2.5 hover:bg-slate-50 rounded-full text-slate-700">
               <ShoppingBag className="w-5 h-5" />
               

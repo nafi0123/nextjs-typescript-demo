@@ -1,6 +1,6 @@
 import { getHomeRecentProducts } from "@/services/recentHome.service";
 import Link from "next/link";
-import Image from "next/image"; // Next.js Image ইমপোর্ট
+import Image from "next/image"; 
 import Container from "../shared/Container";
 
 const NewArrival = async () => {
@@ -27,16 +27,25 @@ const NewArrival = async () => {
                                 href={`/collections/${item._id}`} 
                                 className="group block space-y-4"
                             >
-                                {/* Image Container: Image Tag implementation */}
+                                {/* Image Container */}
                                 <div className="aspect-square bg-[#F5F5F5] overflow-hidden relative transition-all duration-500 group-hover:shadow-md">
                                     <Image 
                                         src={item.image} 
                                         alt={item.name}
-                                        fill // প্যারেন্ট ডিভ অনুযায়ী জায়গা দখল করবে
+                                        fill 
                                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                                         className="object-cover mix-blend-multiply group-hover:scale-110 transition-transform duration-700"
-                                        priority={false} // লেজি লোডিং এনাবেল রাখার জন্য
+                                        priority={false}
                                     />
+
+                                    {/* Out of Stock Badge: স্টক ০ হলে দেখাবে */}
+                                    {item.stock === 0 && (
+                                        <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center z-10">
+                                            <span className="bg-black text-white text-[10px] md:text-xs font-black uppercase px-3 py-1.5 tracking-widest shadow-xl">
+                                                Out of Stock
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Info Section */}
@@ -50,7 +59,7 @@ const NewArrival = async () => {
                                     </h3>
                                     
                                     <p className="text-lg md:text-2xl font-black text-slate-900 pt-1">
-                                        ${item.price}
+                                        ৳{item.price}
                                     </p>
                                 </div>
                             </Link>

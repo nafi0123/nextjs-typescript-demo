@@ -6,13 +6,12 @@ import { Ingredient } from '@/types/about'
 
 // ASSETS
 import storyImg from '@/assets/img/Philosophy.png'
-
 import philosophyImg from '@/assets/img/Rectangle 8 (1).png'   
 import ingredients1 from '@/assets/img/Frame 1597882762 (1).png'
 import ingredients2 from '@/assets/img/Frame 1597882762.png'
 import ingredients3 from '@/assets/img/Frame 1597882765.png'
 
-export default function Page() {
+export default function AboutPage() {
   
   const ingredientList: Ingredient[] = [
     { 
@@ -36,19 +35,20 @@ export default function Page() {
     <main className="bg-white font-sans overflow-hidden">
       
       {/* --- SECTION 1: OUR STORY --- */}
-      <section className="bg-[#F6ECDC] py-20 lg:py-24">
+      <section className="bg-[#F6ECDC] py-16 md:py-24">
         <Container>
-          <div className="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
-            <div className="flex-1 space-y-6">
-              <h1 className="text-[48px] md:text-[56px] font-bold text-[#333] leading-tight">
+          {/* মোবাইলে দুই পাশে প্যাডিং নিশ্চিত করতে px-4 বা px-6 যোগ করা হয়েছে */}
+          <div className="px-4 sm:px-6 md:px-0 flex flex-col md:flex-row items-center gap-10 lg:gap-20">
+            <div className="flex-1 space-y-6 text-center md:text-left">
+              <h1 className="text-[36px] md:text-[56px] font-black text-[#333] leading-tight uppercase italic tracking-tighter">
                 Our Story
               </h1>
-              <p className="text-[#666] text-[18px] leading-relaxed max-w-[500px]">
+              <p className="text-[#666] text-[16px] md:text-[18px] leading-relaxed max-w-[500px] mx-auto md:mx-0">
                 Seoul Mirage was born from a passion for Korean skincare innovation 
                 and a commitment to creating luxury products that deliver exceptional results.
               </p>
             </div>
-            <div className="flex-1 w-full h-[500px] relative">
+            <div className="flex-1 w-full h-[350px] md:h-[500px] relative">
               <Image
                 src={storyImg}
                 alt="Our Story"
@@ -61,39 +61,32 @@ export default function Page() {
         </Container>
       </section>
 
-      
       {/* --- SECTION 3: OUR PHILOSOPHY --- */}
-      <section className="py-24 bg-white">
+      <section className="py-20 md:py-24 bg-white">
         <Container>
-          <div className="flex flex-col md:flex-row items-center gap-16 lg:gap-24">
-            <div className="flex-1 space-y-10">
-              <h2 className="text-[32px] md:text-[40px] font-bold text-[#333]">
+          <div className="px-4 sm:px-6 md:px-0 flex flex-col-reverse md:flex-row items-center gap-12 lg:gap-24">
+            <div className="flex-1 space-y-8 md:space-y-10">
+              <h2 className="text-[32px] md:text-[40px] font-black text-[#333] uppercase italic tracking-tighter">
                 Our Philosophy
               </h2>
 
               <div className="space-y-0">
-                <div className="border-b border-gray-200 py-8 group">
-                  <h4 className="text-[20px] font-bold text-[#333] mb-3">Purity</h4>
-                  <p className="text-gray-500 text-[15px] leading-relaxed">
-                    Clean, gentle ingredients safe for all skin types. We believe beauty shouldn&apos;t be complicated.
-                  </p>
-                </div>
-                <div className="border-b border-gray-200 py-8 group">
-                  <h4 className="text-[20px] font-bold text-[#333] mb-3">Innovation</h4>
-                  <p className="text-gray-500 text-[15px] leading-relaxed">
-                    Modern science fused with time-tested rituals to unlock your skin&apos;s true potential.
-                  </p>
-                </div>
-                <div className="border-b border-gray-200 py-8 group">
-                  <h4 className="text-[20px] font-bold text-[#333] mb-3">Sustainability</h4>
-                  <p className="text-gray-500 text-[15px] leading-relaxed">
-                    Eco-conscious sourcing and responsible packaging for a beautiful future.
-                  </p>
-                </div>
+                {[
+                  { title: "Purity", desc: "Clean, gentle ingredients safe for all skin types. We believe beauty shouldn't be complicated." },
+                  { title: "Innovation", desc: "Modern science fused with time-tested rituals to unlock your skin's true potential." },
+                  { title: "Sustainability", desc: "Eco-conscious sourcing and responsible packaging for a beautiful future." }
+                ].map((item, i) => (
+                  <div key={i} className="border-b border-gray-100 py-6 md:py-8 group">
+                    <h4 className="text-[18px] md:text-[20px] font-bold text-[#333] mb-2 uppercase">{item.title}</h4>
+                    <p className="text-gray-500 text-[14px] md:text-[15px] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            <div className="flex-1 w-full h-[650px] relative">
+            <div className="flex-1 w-full h-[400px] md:h-[650px] relative">
               <Image
                 src={philosophyImg}
                 alt="Our Philosophy"
@@ -106,29 +99,38 @@ export default function Page() {
       </section>
 
       {/* --- SECTION 4: OUR INGREDIENTS --- */}
-      <section className="bg-[#F6ECDC] py-24">
+      <section className="bg-[#F6ECDC] py-20 md:py-24">
         <Container>
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-[36px] md:text-[48px] font-bold text-[#333]">
-              Our Ingredients
-            </h2>
-            <p className="text-[#666] text-[16px] max-w-2xl mx-auto leading-relaxed">
-              We believe in the power of nature enhanced by science. Our formulations are crafted for pure efficacy.
-            </p>
-          </div>
+          <div className="px-4 sm:px-6 md:px-0">
+            <div className="text-center mb-12 md:mb-16 space-y-4">
+              <h2 className="text-[32px] md:text-[48px] font-black text-[#333] uppercase italic tracking-tighter">
+                Our Ingredients
+              </h2>
+              <p className="text-[#666] text-[14px] md:text-[16px] max-w-2xl mx-auto leading-relaxed">
+                We believe in the power of nature enhanced by science. Our formulations are crafted for pure efficacy.
+              </p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {ingredientList.map((item, idx) => (
-              <div key={idx} className="bg-white p-8 rounded-sm shadow-sm hover:shadow-md transition-shadow group">
-                <div className="relative h-60 w-full mb-8 rounded-sm overflow-hidden">
-                  <Image src={item.img} alt={item.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+              {ingredientList.map((item, idx) => (
+                <div key={idx} className="bg-white p-6 md:p-8 rounded-sm shadow-sm hover:shadow-md transition-all group">
+                  <div className="relative h-52 md:h-60 w-full mb-6 md:mb-8 rounded-sm overflow-hidden">
+                    <Image 
+                      src={item.img} 
+                      alt={item.title} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-700" 
+                    />
+                  </div>
+                  <h4 className="text-[20px] md:text-[22px] font-extrabold mb-3 text-[#333] uppercase tracking-tight">
+                    {item.title}
+                  </h4>
+                  <p className="text-[#666] text-[13px] md:text-[14px] leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
-                <h4 className="text-[22px] font-bold mb-4 text-[#333]">{item.title}</h4>
-                <p className="text-[#666] text-[14px] leading-relaxed">
-                  {item.desc}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </Container>
       </section>
