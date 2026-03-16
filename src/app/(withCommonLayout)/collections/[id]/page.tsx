@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft } from "lucide-react"; 
 import AddToCartButton from "../_components/AddToCartButton"; 
+import ReviewInsight from "./_components/ReviewInsight";
 
 interface IProductDetailsProps {
     params: Promise<{ id: string }>;
@@ -22,11 +23,10 @@ const ProductDetailsPage = async ({ params }: IProductDetailsProps) => {
     return (
         <section className="py-10 md:py-24 bg-white overflow-hidden">
             <Container>
-                {/* মোবাইলে দুই পাশে প্যাডিং নিশ্চিত করতে px-4 sm:px-6 অ্যাড করা হয়েছে */}
                 <div className="px-4 sm:px-6 md:px-0">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-20 items-center">
                         
-                        {/* ইমেজ কন্টেইনার - মোবাইলে সাইজ অ্যাডজাস্ট করা হয়েছে */}
+                        {/* ইমেজ কন্টেইনার */}
                         <div className="aspect-square bg-[#F5F5F5] relative overflow-hidden flex items-center justify-center p-8 md:p-12 rounded-sm shadow-sm">
                             <Image 
                                 src={product.image} 
@@ -63,9 +63,13 @@ const ProductDetailsPage = async ({ params }: IProductDetailsProps) => {
                                     </span>
                                 </div>
                                 
-                                <p className="text-slate-500 leading-relaxed max-w-lg text-sm md:text-base font-medium">
+                                <p className="text-slate-500 leading-relaxed max-w-lg text-sm md:text-base font-medium mb-6">
                                     {product.description}
                                 </p>
+
+                                {/* --- AI Review Insight সেকশন --- */}
+                                {/* কাস্টমার রিভিউ পড়ার আগেই এই স্মার্ট সামারিটি দেখতে পাবে */}
+                                <ReviewInsight product={product} />
                             </div>
 
                             {/* ৩. 'Add To Cart' বাটন */}
