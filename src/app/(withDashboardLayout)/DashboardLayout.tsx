@@ -123,17 +123,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           <div className="flex items-center gap-6 md:gap-10">
             <div className="flex items-center gap-5 text-slate-400">
-              <Search size={20} className="hover:text-black cursor-pointer transition-colors" />
               <div className="relative">
-                <Bell size={20} className="hover:text-black cursor-pointer transition-colors" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
               </div>
             </div>
 
             <div className="flex items-center gap-4 pl-6 md:pl-10 border-l border-slate-100">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-black text-slate-900 leading-none uppercase">
-                  {isLoading ? "..." : user?.name || "Nafi Mahmud"}
+                  {isLoading ? "..." : user?.name }
                 </p>
                 <p className="text-[9px] text-[#CCAF91] font-bold uppercase tracking-[0.15em] mt-1.5">
                   {user?.role || "Admin"}

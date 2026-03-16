@@ -8,7 +8,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <SessionWrapper>
      
         <GlobalProvider>
-          {/* DashboardLayout এখন সঠিকভাবে Context এবং TanStack Query এক্সেস করতে পারবে */}
           <DashboardLayout>
             {children}
           </DashboardLayout>

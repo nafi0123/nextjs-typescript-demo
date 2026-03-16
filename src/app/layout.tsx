@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: {
-    default: "Car cleanify",
-    template: "%s | Car Cleanify",
+    default: "LUMINA | Luxury Skincare & Beauty",
+    template: "%s | LUMINA",
   },
-  description: "Car washing system",
+  description: "Experience the art of clinical skincare. Curated premium beauty essentials for your daily glow.",
 };
 
 export default function RootLayout({ children }) {

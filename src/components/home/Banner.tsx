@@ -11,26 +11,25 @@ import {
 } from "@/components/ui/carousel"
 import { Button } from "@/components/ui/button"
 
-// Assets
-import banner1 from '@/assets/img/Banner.png'
-
-
 const bannerData = [
   { 
     id: 1, 
-    img: banner1, 
+    // ছবি ১: লাক্সারি কসমেটিকস সেট এবং গ্লসি টেক্সচার (Premium Cosmetics Focus)
+    img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2000", 
     title: "Discover your skin's true potential", 
     desc: "Premium skincare that combines innovation with clean, effective ingredients for all skin types." 
   },
   { 
     id: 2, 
-    img: banner1, 
+    // ছবি ২: হাই-এন্ড লিপস্টিক এবং বিউটি প্রোডাক্টস (Luxury Makeup Focus)
+    img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2000", 
     title: "Radiance Redefined", 
     desc: "Experience the glow with our natural ingredient formula for a healthier look." 
   },
   { 
     id: 3, 
-    img: banner1, 
+    // ছবি ৩: প্রফেশনাল সিরাম এবং স্কিনকেয়ার সলিউশন (Skincare Essence Focus)
+    img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2000", 
     title: "Modern Beauty Standards", 
     desc: "Empowering your natural beauty with science-backed skincare solutions." 
   }
@@ -42,49 +41,51 @@ export default function Banner() {
   )
 
   return (
-    <section className="w-full">
+    <section className="w-full relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] overflow-hidden">
       <Carousel
         plugins={[plugin.current]}
         className="w-full"
       >
-        <CarouselContent>
+        <CarouselContent className="-ml-0">
           {bannerData.map((banner) => (
-            <CarouselItem key={banner.id}>
-              {/* 70% Viewport Height */}
-              <div className="relative h-[80vh] w-full overflow-hidden bg-slate-100">
+            <CarouselItem key={banner.id} className="pl-0">
+              
+              <div className="relative h-[65vh] md:h-[85vh] w-full overflow-hidden">
                 
-                {/* Professional Image Focus Fix */}
                 <Image
                   src={banner.img}
                   alt={banner.title}
                   fill
-                  className="object-cover object-[center_5%] md:object-[center_10%]" 
-                  // 5% ba 10% vertical position matha katar somvabona bondho korbe
+                  className="object-cover" 
                   priority={banner.id === 1}
+                  quality={100}
+                  sizes="100vw"
                 />
                 
-                {/* Figma Design Full Implementation */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent flex items-center">
+                {/* অরিজিনাল ডিজাইন ও টেক্সট */}
+                <div className="absolute inset-0 bg-black/30 flex items-center">
                   <div className="container mx-auto px-6 md:px-12 lg:px-20">
-                    <div className="max-w-3xl space-y-6 text-white">
-                      <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+                    <div className="max-w-3xl space-y-5 md:space-y-6 text-white text-left">
+                      
+                      <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-[1] italic">
                         {banner.title}
                       </h1>
-                      <p className="text-lg md:text-xl text-slate-100 max-w-lg leading-relaxed">
+                      
+                      <p className="text-sm md:text-xl text-slate-100 max-w-lg leading-relaxed font-medium">
                         {banner.desc}
                       </p>
                       
-                      <div className="flex gap-4 pt-4">
+                      <div className="flex flex-wrap gap-4 pt-4">
                         <Button 
                           size="lg" 
-                          className="rounded-full px-10 h-14 bg-white text-black hover:bg-slate-200 font-semibold"
+                          className="rounded-full px-8 md:px-10 h-12 md:h-16 bg-white text-black hover:bg-slate-200 font-black uppercase text-[10px] md:text-sm tracking-widest transition-all active:scale-95 shadow-2xl"
                         >
                           Shop Now
                         </Button>
                         <Button 
                           size="lg" 
                           variant="outline" 
-                          className="rounded-full px-10 h-14 border-2 border-white text-black hover:bg-white/10 font-semibold"
+                          className="rounded-full px-8 md:px-10 h-12 md:h-16 border-2 border-white text-white hover:bg-white/10 font-black uppercase text-[10px] md:text-sm tracking-widest transition-all active:scale-95"
                         >
                           About Us
                         </Button>

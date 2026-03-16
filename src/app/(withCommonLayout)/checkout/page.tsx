@@ -30,8 +30,6 @@ const CheckoutPage = () => {
         e.preventDefault();
         
         const formData = new FormData(e.currentTarget);
-        
-        // লগইন করা ইউজারের ইমেইলটি প্রাধান্য পাবে
         const userEmail = session?.user?.email || formData.get("email") as string;
 
         const shippingDetails = {
@@ -47,7 +45,7 @@ const CheckoutPage = () => {
         try {
             const paymentData = {
                 totalAmount: total,
-                userEmail: userEmail, // আপনার স্কিমা অনুযায়ী
+                userEmail: userEmail,
                 shippingAddress: shippingDetails,
                 items: selectedItems.map(item => ({
                     productId: item._id,
@@ -56,7 +54,6 @@ const CheckoutPage = () => {
                 }))
             };
 
-            // URL: /api/payment (axiosPrivate এ baseURL থাকলে শুধু /payment)
             const response = await axiosPrivate.post("/payment", paymentData);
 
             if (response.data?.url) {
@@ -73,75 +70,81 @@ const CheckoutPage = () => {
     };
 
     return (
-        <div className="bg-[#F5F0E5] min-h-screen py-12 md:py-20 font-sans text-slate-900">
+        <div className="bg-[#F5F0E5] min-h-screen py-10 md:py-20 font-sans text-slate-900 overflow-hidden">
             <Container>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                    <div className="lg:col-span-2 bg-white p-8 md:p-12 shadow-sm border border-slate-100">
-                        <h2 className="text-3xl font-bold mb-10 uppercase tracking-tighter italic">Shipping Information</h2>
+                {/* মোবাইল প্যাডিং নিশ্চিত করতে px-4 অ্যাড করা হয়েছে */}
+                <div className="px-4 sm:px-6 md:px-0">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-10">
                         
-                        <form className="space-y-8" onSubmit={handleSSLPayment}>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">First Name</label>
-                                    <input name="firstName" type="text" placeholder="John" className="w-full border-b border-slate-200 py-3 focus:border-black outline-none transition-all bg-transparent" required />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Last Name</label>
-                                    <input name="lastName" type="text" placeholder="Doe" className="w-full border-b border-slate-200 py-3 focus:border-black outline-none transition-all bg-transparent" required />
-                                </div>
-                            </div>
+                        {/* Shipping Form Section */}
+                        <div className="lg:col-span-2 bg-white p-6 md:p-12 shadow-sm border border-slate-100 order-2 lg:order-1">
+                            <h2 className="text-2xl md:text-3xl font-bold mb-8 md:mb-10 uppercase tracking-tighter italic">Shipping Information</h2>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Email Address</label>
-                                    <input name="email" type="email" defaultValue={session?.user?.email || ""} readOnly={!!session?.user?.email} className="w-full border-b border-slate-200 py-3 focus:border-black outline-none transition-all bg-transparent text-slate-500" required />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Phone Number</label>
-                                    <input name="phone" type="text" placeholder="01XXXXXXXXX" className="w-full border-b border-slate-200 py-3 focus:border-black outline-none transition-all bg-transparent" required />
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Full Address</label>
-                                <input name="address" type="text" placeholder="Street, City, Zip" className="w-full border-b border-slate-200 py-3 focus:border-black outline-none transition-all bg-transparent" required />
-                            </div>
-
-                            <button type="submit" className="w-full bg-black text-white py-6 text-[11px] font-black uppercase tracking-[0.4em] hover:bg-zinc-800 transition-all shadow-2xl active:scale-[0.98]">
-                                Pay Now — ${total.toFixed(2)}
-                            </button>
-                        </form>
-                    </div>
-
-                    <div className="lg:col-span-1">
-                        <div className="bg-white p-8 shadow-sm border border-slate-100 sticky top-10">
-                            <h3 className="italic font-black text-xl mb-8 uppercase tracking-tight border-b pb-4">Order Summary</h3>
-                            <div className="max-h-[350px] overflow-y-auto space-y-6">
-                                {selectedItems.map(item => (
-                                    <div key={item._id} className="flex gap-4 items-center border-b border-slate-50 pb-4">
-                                        <div className="relative h-16 w-16 bg-[#F9F9F9] flex-shrink-0">
-                                            <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
-                                        </div>
-                                        <div className="flex-grow">
-                                            <h4 className="font-bold text-[13px] uppercase truncate w-32">{item.name}</h4>
-                                            <p className="text-[10px] text-slate-400 font-bold uppercase">Qty: {item.quantity}</p>
-                                        </div>
-                                        <p className="font-black text-sm">${(item.price * item.quantity).toFixed(2)}</p>
+                            <form className="space-y-6 md:space-y-8" onSubmit={handleSSLPayment}>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">First Name</label>
+                                        <input name="firstName" type="text" placeholder="John" className="w-full border-b border-slate-200 py-2 md:py-3 focus:border-black outline-none transition-all bg-transparent text-sm" required />
                                     </div>
-                                ))}
-                            </div>
-                            <div className="space-y-4 pt-6 mt-4">
-                                <div className="flex justify-between text-[11px] font-bold uppercase">
-                                    <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)}</span>
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Last Name</label>
+                                        <input name="lastName" type="text" placeholder="Doe" className="w-full border-b border-slate-200 py-2 md:py-3 focus:border-black outline-none transition-all bg-transparent text-sm" required />
+                                    </div>
                                 </div>
-                                <div className="flex justify-between text-[11px] font-bold uppercase">
-                                    <span>Shipping</span>
-                                    <span>${shippingFee.toFixed(2)}</span>
+                                
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Email Address</label>
+                                        <input name="email" type="email" defaultValue={session?.user?.email || ""} readOnly={!!session?.user?.email} className="w-full border-b border-slate-200 py-2 md:py-3 focus:border-black outline-none transition-all bg-transparent text-slate-500 text-sm" required />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Phone Number</label>
+                                        <input name="phone" type="text" placeholder="01XXXXXXXXX" className="w-full border-b border-slate-200 py-2 md:py-3 focus:border-black outline-none transition-all bg-transparent text-sm" required />
+                                    </div>
                                 </div>
-                                <div className="flex justify-between items-end pt-6 border-t-2 border-black">
-                                    <span className="font-black text-xs uppercase tracking-[0.2em]">Total</span>
-                                    <span className="text-4xl font-black">${total.toFixed(2)}</span>
+
+                                <div className="space-y-2">
+                                    <label className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Full Address</label>
+                                    <input name="address" type="text" placeholder="Street, City, Zip" className="w-full border-b border-slate-200 py-2 md:py-3 focus:border-black outline-none transition-all bg-transparent text-sm" required />
+                                </div>
+
+                                <button type="submit" className="w-full bg-black text-white py-5 md:py-6 text-[10px] md:text-[11px] font-black uppercase tracking-[0.3em] md:tracking-[0.4em] hover:bg-zinc-800 transition-all shadow-xl active:scale-[0.98]">
+                                    Pay Now — ${total.toFixed(2)}
+                                </button>
+                            </form>
+                        </div>
+
+                        {/* Order Summary Section */}
+                        <div className="lg:col-span-1 order-1 lg:order-2">
+                            <div className="bg-white p-6 md:p-8 shadow-sm border border-slate-100 sticky top-10">
+                                <h3 className="italic font-black text-xl mb-6 md:mb-8 uppercase tracking-tight border-b pb-4">Order Summary</h3>
+                                <div className="max-h-[300px] md:max-h-[350px] overflow-y-auto space-y-4 md:space-y-6 pr-2">
+                                    {selectedItems.map(item => (
+                                        <div key={item._id} className="flex gap-4 items-center border-b border-slate-50 pb-4">
+                                            <div className="relative h-12 w-12 md:h-16 md:w-16 bg-[#F9F9F9] flex-shrink-0">
+                                                <Image src={item.image} alt={item.name} fill className="object-contain p-1" />
+                                            </div>
+                                            <div className="flex-grow min-w-0">
+                                                <h4 className="font-bold text-[12px] md:text-[13px] uppercase truncate">{item.name}</h4>
+                                                <p className="text-[9px] md:text-[10px] text-slate-400 font-bold uppercase">Qty: {item.quantity}</p>
+                                            </div>
+                                            <p className="font-black text-xs md:text-sm flex-shrink-0">${(item.price * item.quantity).toFixed(2)}</p>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="space-y-3 md:space-y-4 pt-6 mt-4 border-t">
+                                    <div className="flex justify-between text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                                        <span>Subtotal</span>
+                                        <span className="text-slate-900">${subtotal.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between text-[10px] md:text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                                        <span>Shipping</span>
+                                        <span className="text-slate-900">${shippingFee.toFixed(2)}</span>
+                                    </div>
+                                    <div className="flex justify-between items-end pt-6 border-t-2 border-black mt-4">
+                                        <span className="font-black text-[10px] md:text-xs uppercase tracking-[0.2em]">Total</span>
+                                        <span className="text-3xl md:text-4xl font-black tracking-tighter">${total.toFixed(2)}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
