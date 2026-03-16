@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck } from 'lucide-react';
 
 const LoginPage = () => {
     const router = useRouter();
@@ -11,9 +11,39 @@ const LoginPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    // --- অটো ফিল এবং লগইন ফাংশন ---
+    const handleAdminAutoLogin = async () => {
+        const adminEmail = "nafi2122940@gmail.com";
+        const adminPass = "123456";
+        
+        setEmail(adminEmail);
+        setPassword(adminPass);
+        
+        setLoading(true);
+        try {
+            const res = await signIn("credentials", {
+                email: adminEmail,
+                password: adminPass,
+                redirect: false,
+            });
+
+            if (res?.error) {
+                setError("Invalid Admin Credentials!");
+            } else {
+                router.push("/");
+            }
+        } catch (err) {
+            setError("Something went wrong!");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const res = await signIn("credentials", {
                 email,
@@ -28,14 +58,14 @@ const LoginPage = () => {
             }
         } catch (err) {
             setError("Something went wrong!");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        // ১. মেইন কন্টেইনারে আপনার ইমেজের মতো অফ-হোয়াইট/বেজ কালার ব্যবহার করা হয়েছে
         <div className="min-h-screen bg-[#F2EDE4] flex flex-col items-center justify-center p-4">
             
-            {/* ২. হেডার টেক্সট সেকশন */}
             <div className="text-center mb-8">
                 <h1 className="text-4xl md:text-5xl font-medium text-[#1A1A1A] mb-4">
                     Sign in to your account
@@ -45,7 +75,6 @@ const LoginPage = () => {
                 </p>
             </div>
 
-            {/* ৩. হোয়াইট কার্ড সেকশন */}
             <div className="w-full max-w-[550px] bg-white p-10 md:p-16 rounded-sm shadow-sm">
                 
                 <form onSubmit={handleLogin} className="space-y-8">
@@ -56,7 +85,6 @@ const LoginPage = () => {
                         </p>
                     )}
 
-                    {/* Email Input Field */}
                     <div className="space-y-3">
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
                             Email Address
@@ -71,7 +99,6 @@ const LoginPage = () => {
                         />
                     </div>
 
-                    {/* Password Input Field */}
                     <div className="space-y-3">
                         <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-400">
                             Password
@@ -95,21 +122,28 @@ const LoginPage = () => {
                         </div>
                     </div>
 
-                    {/* Forgot Password Link */}
-                    <div className="flex justify-end">
-                        <a href="#" className="text-xs font-bold underline text-slate-900 uppercase tracking-tighter">
-                            Forgot your password?
-                        </a>
-                    </div>
-
-                    {/* ৪. সাইন ইন বাটন - পিওর ব্ল্যাক এবং শার্প কর্নার (ডিজাইন অনুযায়ী) */}
                     <button
                         type="submit"
-                        className="w-full bg-black text-white py-5 rounded-sm font-bold uppercase tracking-widest hover:bg-zinc-900 transition duration-300 mt-4"
+                        disabled={loading}
+                        className="w-full bg-black text-white py-5 rounded-sm font-bold uppercase tracking-widest hover:bg-zinc-900 transition duration-300 mt-4 disabled:bg-zinc-500"
                     >
-                        Sign In
+                        {loading ? "Signing In..." : "Sign In"}
                     </button>
                 </form>
+
+                {/* --- Admin Quick Login Button --- */}
+                <div className="mt-8 pt-8 border-t border-slate-100">
+                    <button
+                        onClick={handleAdminAutoLogin}
+                        className="w-full flex items-center justify-center gap-2 border-2 border-dashed border-slate-300 text-slate-500 py-3 rounded-md hover:border-slate-900 hover:text-slate-900 transition-all group"
+                    >
+                        <ShieldCheck size={18} className="group-hover:text-blue-600" />
+                        <span className="text-xs font-bold uppercase tracking-widest">Quick Admin Access</span>
+                    </button>
+                    <p className="text-[9px] text-center text-slate-400 mt-2 italic">
+                        * Only for testing purposes
+                    </p>
+                </div>
             </div>
         </div>
     );

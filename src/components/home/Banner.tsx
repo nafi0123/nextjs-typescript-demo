@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link" // লিঙ্কিংয়ের জন্য ইম্পোর্ট করা হয়েছে
 import Autoplay from "embla-carousel-autoplay"
 
 import {
@@ -14,21 +15,18 @@ import { Button } from "@/components/ui/button"
 const bannerData = [
   { 
     id: 1, 
-    // ছবি ১: লাক্সারি কসমেটিকস সেট এবং গ্লসি টেক্সচার (Premium Cosmetics Focus)
     img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2000", 
     title: "Discover your skin's true potential", 
     desc: "Premium skincare that combines innovation with clean, effective ingredients for all skin types." 
   },
   { 
     id: 2, 
-    // ছবি ২: হাই-এন্ড লিপস্টিক এবং বিউটি প্রোডাক্টস (Luxury Makeup Focus)
     img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2000", 
     title: "Radiance Redefined", 
     desc: "Experience the glow with our natural ingredient formula for a healthier look." 
   },
   { 
     id: 3, 
-    // ছবি ৩: প্রফেশনাল সিরাম এবং স্কিনকেয়ার সলিউশন (Skincare Essence Focus)
     img: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=2000", 
     title: "Modern Beauty Standards", 
     desc: "Empowering your natural beauty with science-backed skincare solutions." 
@@ -62,7 +60,6 @@ export default function Banner() {
                   sizes="100vw"
                 />
                 
-                {/* অরিজিনাল ডিজাইন ও টেক্সট */}
                 <div className="absolute inset-0 bg-black/30 flex items-center">
                   <div className="container mx-auto px-6 md:px-12 lg:px-20">
                     <div className="max-w-3xl space-y-5 md:space-y-6 text-white text-left">
@@ -76,19 +73,26 @@ export default function Banner() {
                       </p>
                       
                       <div className="flex flex-wrap gap-4 pt-4">
-                        <Button 
-                          size="lg" 
-                          className="rounded-full px-8 md:px-10 h-12 md:h-16 bg-white text-black hover:bg-slate-200 font-black uppercase text-[10px] md:text-sm tracking-widest transition-all active:scale-95 shadow-2xl"
-                        >
-                          Shop Now
-                        </Button>
-                        <Button 
-                          size="lg" 
-                          variant="outline" 
-                          className="rounded-full px-8 md:px-10 h-12 md:h-16 border-2 border-white text-white hover:bg-white/10 font-black uppercase text-[10px] md:text-sm tracking-widest transition-all active:scale-95"
-                        >
-                          About Us
-                        </Button>
+                        {/* Shop Now বাটন - কালেকশন পেজে যাওয়ার জন্য */}
+                        <Link href="/collections">
+                          <Button 
+                            size="lg" 
+                            className="rounded-full px-8 md:px-10 h-12 md:h-16 bg-white text-black hover:bg-slate-200 font-black uppercase text-[10px] md:text-sm tracking-widest transition-all active:scale-95 shadow-2xl"
+                          >
+                            Shop Now
+                          </Button>
+                        </Link>
+
+                        {/* About Us বাটন - অ্যাবাউট পেজে যাওয়ার জন্য */}
+                        <Link href="/about">
+                          <Button 
+                            size="lg" 
+                            variant="outline" 
+                            className="rounded-full px-8 md:px-10 h-12 md:h-16 border-2 border-white text-white hover:bg-white/10 font-black uppercase text-[10px] md:text-sm tracking-widest transition-all active:scale-95 bg-transparent"
+                          >
+                            About Us
+                          </Button>
+                        </Link>
                       </div>
                     </div>
                   </div>

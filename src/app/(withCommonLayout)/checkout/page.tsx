@@ -54,7 +54,7 @@ const CheckoutPage = () => {
                 }))
             };
 
-            const response = await axiosPrivate.post("/payment", paymentData);
+            const response = await axiosPrivate.post("/api/payment", paymentData);
 
             if (response.data?.url) {
                 toast.dismiss(loadingToast);

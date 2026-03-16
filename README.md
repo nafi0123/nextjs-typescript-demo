@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌿 LUMINA | Luxury Skincare & Beauty
 
-## Getting Started
+**LUMINA** (formerly Seoul Mirage) is a premium e-commerce platform dedicated to authentic skincare and beauty products. It features a seamless shopping experience, secure payments, and an AI-powered skincare assistant.
 
-First, run the development server:
+## 🚀 Live Demo
+[View Live Site](https://luxury-skincare-beauty.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✨ Key Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Responsive UI:** Modern, clean, and mobile-first design using Tailwind CSS and Shadcn UI.
+- **AI Chatbot:** Integrated Gemini AI to help users find the perfect skincare routine based on product data.
+- **Secure Payment:** Integrated **SSLCommerz** payment gateway for safe and local transactions in Bangladesh.
+- **Product Management:** Dynamic product listing, category filtering, and detailed product views.
+- **Authentication:** Secure login and registration powered by **NextAuth.js**.
+- **Admin Dashboard:** Role-based access for managing orders and inventory (Work in Progress).
+- **Shopping Cart:** Fully functional cart system with persistent state management.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Frontend:** Next.js 16 (App Router), React 19, Tailwind CSS, Shadcn UI.
+- **Backend:** Next.js API Routes (Serverless Functions).
+- **Database:** MongoDB with Mongoose.
+- **Authentication:** NextAuth.js.
+- **Payment Gateway:** SSLCommerz.
+- **AI Integration:** Google Generative AI (Gemini SDK).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧪 Testing Credentials
+For quick review and testing, you can use the following account:
+- **Email:** `nafi2122940@gmail.com`
+- **Password:** `123456`
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ⚙️ Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To run this project locally, create a `.env` file in the root directory and add the following:
+
+```env
+MONGODB_URI=your_mongodb_uri
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+
+# SSLCommerz
+STORE_ID=your_store_id
+STORE_PASSWORD=your_store_password
+IS_LIVE=false
+
+# AI
+NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
+
+# Base URL
+NEXT_PUBLIC_BASE_URL=http://localhost:3000

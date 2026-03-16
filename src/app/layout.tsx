@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,13 +21,17 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    /** * ১. className="light" এবং style={{ colorScheme: 'light' }} যোগ করা হয়েছে 
+     * যাতে সিস্টেম ডার্ক মোড থাকলেও ব্রাউজার আপনার সাইটকে লাইট মোডে রেন্ডার করে।
+     */
+    <html lang="en" className="light" style={{ colorScheme: 'light' }}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        /** * ২. bg-white এবং text-black যোগ করা হয়েছে যাতে ব্যাকগ্রাউন্ড সবসময় সাদা 
+         * এবং টেক্সট সবসময় কালো থাকে। 
+         */
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-black`}
       >
-        
-          {children}
-          
+        {children}
       </body>
     </html>
   );
