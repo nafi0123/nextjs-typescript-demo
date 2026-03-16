@@ -82,3 +82,16 @@ export const deleteProduct = async (id: string) => {
     return { success: false, message: "Failed to delete product" };
   }
 };
+
+
+export const getProductsForChat = async () => {
+    try {
+        await connectDB();
+        // চ্যাটবটের জন্য শুধু নাম, দাম এবং ক্যাটাগরি হলেই চলে
+        const products = await Product.find({}, 'name price category description').lean();
+        return JSON.parse(JSON.stringify(products));
+    } catch (error) {
+        console.error("Chat Data Fetch Error:", error);
+        return [];
+    }
+};
