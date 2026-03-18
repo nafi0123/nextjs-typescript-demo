@@ -50,9 +50,9 @@ const Footer: React.FC = () => {
                     <div className="flex flex-col items-center md:items-start">
                         <h3 className="text-xl md:text-2xl font-normal text-gray-800 mb-4 md:mb-6">Shop</h3>
                         <ul className="flex flex-col gap-3 md:gap-4 text-[15px]">
-                            <li><Link href="/all-products" className="text-gray-600 hover:text-[#E893CF] transition-colors">All Products</Link></li>
-                            <li><Link href="/bestsellers" className="text-gray-600 hover:text-[#E893CF] transition-colors">Bestsellers</Link></li>
-                            <li><Link href="/new-arrivals" className="text-gray-600 hover:text-[#E893CF] transition-colors">New Arrivals</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">All Products</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">Bestsellers</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">New Arrivals</Link></li>
                         </ul>
                     </div>
 
@@ -60,10 +60,10 @@ const Footer: React.FC = () => {
                     <div className="flex flex-col items-center md:items-start">
                         <h3 className="text-xl md:text-2xl font-normal text-gray-800 mb-4 md:mb-6">About</h3>
                         <ul className="flex flex-col gap-3 md:gap-4 text-[15px]">
-                            <li><Link href="/about-us" className="text-gray-600 hover:text-[#E893CF] transition-colors">About Us</Link></li>
-                            <li><Link href="/contact" className="text-gray-600 hover:text-[#E893CF] transition-colors">Contact Us</Link></li>
-                            <li><Link href="/shipping-returns" className="text-gray-600 hover:text-[#E893CF] transition-colors">Shipping & Returns</Link></li>
-                            <li><Link href="/privacy-policy" className="text-gray-600 hover:text-[#E893CF] transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">About Us</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">Contact Us</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">Shipping & Returns</Link></li>
+                            <li><Link href="#" className="text-gray-600 hover:text-[#E893CF] transition-colors">Privacy Policy</Link></li>
                         </ul>
                     </div>
                 </div>
