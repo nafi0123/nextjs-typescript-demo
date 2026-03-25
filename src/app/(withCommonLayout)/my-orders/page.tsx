@@ -47,7 +47,38 @@ const MyOrders = () => {
                     </h2>
 
                     {loading ? (
-                        <div className="py-20 text-center font-black uppercase italic tracking-widest animate-pulse">Loading Records...</div>
+                          <div className="space-y-4 md:space-y-6">
+    {Array(5).fill(0).map((_, i) => (
+      <div
+        key={i}
+        className="bg-white p-5 md:p-8 shadow-sm border border-slate-100 relative overflow-hidden"
+      >
+        {/* left bar */}
+        <div className="absolute left-0 top-0 bottom-0 w-1 bg-slate-200 animate-pulse"></div>
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-5 md:gap-6">
+
+          {/* Left info */}
+          <div className="space-y-2 w-full md:w-auto">
+            <div className="h-2 w-24 bg-slate-200 animate-pulse"></div>
+            <div className="h-3 w-40 bg-slate-200 animate-pulse"></div>
+            <div className="h-2 w-20 bg-slate-200 animate-pulse"></div>
+          </div>
+
+          {/* Right info */}
+          <div className="flex flex-row md:flex-col items-center md:items-end justify-between w-full md:w-auto gap-4 pt-4 md:pt-0">
+            <div className="space-y-2">
+              <div className="h-2 w-16 bg-slate-200 animate-pulse"></div>
+              <div className="h-4 w-20 bg-slate-200 animate-pulse"></div>
+            </div>
+
+            <div className="h-6 w-16 bg-slate-200 rounded-full animate-pulse"></div>
+          </div>
+
+        </div>
+      </div>
+    ))}
+  </div>
                     ) : (
                         <>
                             <div className="space-y-4 md:space-y-6">
